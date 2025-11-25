@@ -48,23 +48,35 @@ export default function Page() {
             <div className="bg-muted/50 aspect-video rounded-xl" />
           </div>
           <div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min" />
-          <div style={{ position: "relative", paddingTop: "56.25%", width: "100%" }}>
+          <div
+            style={{
+              position: "relative",
+              paddingTop: "56.25%",
+              width: "100%",
+            }}
+          >
             <iframe
               src="https://kinescope.io/embed/3BStvUEDbuDobFBXhb2Fyf"
               allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
               frameBorder="0"
               allowFullScreen
-              style={{ position: "absolute", width: "100%", height: "100%", top: 0, left: 0 }}
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                top: 0,
+                left: 0,
+              }}
             ></iframe>
           </div>
-          <iframe
+          {/*<iframe
             src="https://kinescope.io/embed/3BStvUEDbuDobFBXhb2Fyf"
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;"
             frameBorder="0"
             allowFullScreen
             width="1920"
             height="1080"
-          ></iframe>
+          ></iframe>*/}
         </div>
       </SidebarInset>
     </SidebarProvider>

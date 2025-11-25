@@ -3,9 +3,10 @@ import { redirect } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { ProfileForm } from "./profile-form";
+import { PasswordForm } from "./password-form";
+import { DeleteAccount } from "./delete-account";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -56,51 +57,11 @@ export default async function ProfilePage() {
             <Separator />
 
             {/* Форма */}
-            <form className="space-y-4">
-              <div className="grid gap-2">
-                <Label htmlFor="name">Имя</Label>
-                <Input
-                  id="name"
-                  defaultValue={user.name || ""}
-                  placeholder="Введите ваше имя"
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  defaultValue={user.email || ""}
-                  placeholder="email@example.com"
-                  disabled
-                />
-                <p className="text-sm text-muted-foreground">
-                  Email нельзя изменить
-                </p>
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="role">Роль</Label>
-                <Input
-                  id="role"
-                  defaultValue={user.role || "STUDENT"}
-                  disabled
-                />
-                <p className="text-sm text-muted-foreground">
-                  {user.role === "ADMIN" && "Администратор системы"}
-                  {user.role === "TEACHER" && "Преподаватель"}
-                  {user.role === "STUDENT" && "Студент"}
-                </p>
-              </div>
-
-              <div className="flex gap-4">
-                <Button type="submit">Сохранить изменения</Button>
-                <Button type="button" variant="outline">
-                  Отмена
-                </Button>
-              </div>
-            </form>
+            <ProfileForm
+              defaultName={user.name || ""}
+              email={user.email || ""}
+              role={user.role || "STUDENT"}
+            />
           </CardContent>
         </Card>
 
@@ -113,36 +74,7 @@ export default async function ProfilePage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4">
-              <div className="grid gap-2">
-                <Label htmlFor="current-password">Текущий пароль</Label>
-                <Input
-                  id="current-password"
-                  type="password"
-                  placeholder="Введите текущий пароль"
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="new-password">Новый пароль</Label>
-                <Input
-                  id="new-password"
-                  type="password"
-                  placeholder="Введите новый пароль"
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="confirm-password">Подтвердите пароль</Label>
-                <Input
-                  id="confirm-password"
-                  type="password"
-                  placeholder="Повторите новый пароль"
-                />
-              </div>
-
-              <Button type="submit">Изменить пароль</Button>
-            </form>
+            <PasswordForm />
           </CardContent>
         </Card>
 
@@ -155,15 +87,7 @@ export default async function ProfilePage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium">Удалить аккаунт</p>
-                <p className="text-sm text-muted-foreground">
-                  Все ваши данные будут безвозвратно удалены
-                </p>
-              </div>
-              <Button variant="destructive">Удалить аккаунт</Button>
-            </div>
+            <DeleteAccount />
           </CardContent>
         </Card>
       </div>
