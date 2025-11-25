@@ -45,7 +45,7 @@ export function LoginForm({
       if (result?.error) {
         setError("Неверный email или пароль");
       } else {
-        router.push("/dashboard");
+        router.push("/courses");
         router.refresh();
       }
     } catch (error) {
@@ -56,7 +56,7 @@ export function LoginForm({
   };
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/dashboard" });
+    signIn("google", { callbackUrl: "/courses" });
   };
 
   return (

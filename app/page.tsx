@@ -45,7 +45,7 @@ export default async function Home() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Панель управления</Link>
+                    <Link href="/courses">Панель управления</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <SignOutButton />

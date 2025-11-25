@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { updateProfile } from "./actions";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface ProfileFormProps {
   defaultName: string;
@@ -15,12 +16,10 @@ interface ProfileFormProps {
 
 export function ProfileForm({ defaultName, email, role }: ProfileFormProps) {
   const [isPending, startTransition] = useTransition();
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setMessage(null);
 
     const formData = new FormData(e.currentTarget);
 
@@ -28,9 +27,9 @@ export function ProfileForm({ defaultName, email, role }: ProfileFormProps) {
       const result = await updateProfile(formData);
 
       if (result.error) {
-        setMessage({ type: "error", text: result.error });
+        toast.error(result.error);
       } else if (result.success) {
-        setMessage({ type: "success", text: result.success });
+        toast.success(result.success);
         router.refresh();
       }
     });
@@ -75,18 +74,6 @@ export function ProfileForm({ defaultName, email, role }: ProfileFormProps) {
           {role === "STUDENT" && "Студент"}
         </p>
       </div>
-
-      {message && (
-        <div
-          className={`rounded-md p-3 text-sm ${
-            message.type === "error"
-              ? "bg-destructive/10 text-destructive"
-              : "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-          }`}
-        >
-          {message.text}
-        </div>
-      )}
 
       <div className="flex gap-4">
         <Button type="submit" disabled={isPending}>

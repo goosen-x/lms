@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { deleteAccount } from "./actions";
 import { signOut } from "next-auth/react";
@@ -15,18 +15,19 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export function DeleteAccount() {
   const [isPending, startTransition] = useTransition();
-  const [message, setMessage] = useState<string | null>(null);
 
   const handleDelete = () => {
     startTransition(async () => {
       const result = await deleteAccount();
 
       if (result.error) {
-        setMessage(result.error);
+        toast.error(result.error);
       } else if (result.success) {
+        toast.success(result.success);
         // Выходим из системы и редиректим
         await signOut({ callbackUrl: "/" });
       }
@@ -40,9 +41,6 @@ export function DeleteAccount() {
         <p className="text-sm text-muted-foreground">
           Все ваши данные будут безвозвратно удалены
         </p>
-        {message && (
-          <p className="mt-2 text-sm text-destructive">{message}</p>
-        )}
       </div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
