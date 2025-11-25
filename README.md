@@ -1,36 +1,165 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎓 LMS - Learning Management System
 
-## Getting Started
+Современная платформа для онлайн-обучения с видео-лекциями, тестами, заданиями и системой сертификатов.
 
-First, run the development server:
+## 🚀 Технологический стек
+
+- **Frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/ui
+- **Backend:** Next.js API Routes, Prisma ORM, NextAuth.js v5
+- **Database:** PostgreSQL 16, Redis 7
+- **Storage:** MinIO (S3-compatible)
+- **Infrastructure:** Docker Compose
+
+## ⚡ Quick Start
+
+### 1. Запусти Docker контейнеры
+
+```bash
+docker-compose up -d
+```
+
+### 2. Установи зависимости и выполни миграции
+
+```bash
+npm install
+npx prisma generate
+npx prisma migrate dev --name init
+```
+
+### 3. Заполни базу тестовыми данными
+
+```bash
+npx prisma db seed
+```
+
+**Тестовые учётки:**
+- **Админ:** admin@lms.ru / admin123
+- **Преподаватель:** teacher@lms.ru / teacher123
+- **Студент:** student@lms.ru / student123
+
+### 4. Запусти dev сервер
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Открой [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📚 Документация
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Полная документация находится в директории [`docs/`](./docs/):
 
-## Learn More
+- **[SETUP.md](./SETUP.md)** - Детальная инструкция по setup
+- **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)** - Архитектура системы
+- **[docs/DATABASE.md](./docs/DATABASE.md)** - Схема базы данных
+- **[docs/API.md](./docs/API.md)** - API endpoints
+- **[docs/AUTH.md](./docs/AUTH.md)** - Аутентификация и авторизация
 
-To learn more about Next.js, take a look at the following resources:
+[📖 Полная документация →](./docs/README.md)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎯 Возможности
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### ✅ Реализовано (Этап 1 - Фундамент)
 
-## Deploy on Vercel
+- ✅ Docker окружение (PostgreSQL, Redis, MinIO)
+- ✅ Prisma ORM с полной схемой (15 таблиц)
+- ✅ NextAuth v5 аутентификация (Credentials + Google OAuth)
+- ✅ Защита роутов по ролям (ADMIN, TEACHER, STUDENT)
+- ✅ shadcn/ui компоненты
+- ✅ Базовые страницы для всех ролей
+- ✅ Рабочая форма входа
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🚧 В разработке (Этап 2)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 🚧 CRUD API для курсов
+- 🚧 Загрузка и обработка видео
+- 🚧 Управление курсами для преподавателей
+- 🚧 Просмотр курсов для студентов
+
+### 📋 Планируется (Этап 3+)
+
+- 📋 Система тестов и заданий
+- 📋 Аналитика и отчеты
+- 📋 Генерация сертификатов
+- 📋 Система уведомлений
+- 📋 Поиск и фильтрация курсов
+
+## 🏗️ Структура проекта
+
+```
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   ├── (auth)/            # Auth pages
+│   ├── admin/             # Admin panel
+│   ├── teacher/           # Teacher dashboard
+│   └── student/           # Student dashboard
+├── components/             # React components
+│   ├── ui/                # shadcn/ui components
+│   ├── auth/              # Auth components
+│   └── providers/         # Context providers
+├── lib/                    # Utilities
+│   ├── auth.ts            # NextAuth config
+│   ├── auth-helpers.ts    # Auth utilities
+│   └── prisma.ts          # Prisma client
+├── prisma/                 # Database
+│   ├── schema.prisma      # DB schema
+│   └── seed.ts            # Seed data
+├── docs/                   # Documentation
+└── docker-compose.yml      # Docker config
+```
+
+## 🔐 Роли и права доступа
+
+| Роль | Права |
+|------|-------|
+| **ADMIN** | Полный доступ ко всей системе |
+| **TEACHER** | Создание курсов, проверка заданий, управление студентами |
+| **STUDENT** | Просмотр курсов, сдача заданий, прохождение тестов |
+
+## 🐳 Docker сервисы
+
+- **PostgreSQL 16** - `localhost:5432`
+- **Redis 7** - `localhost:6379`
+- **MinIO** - `localhost:9000` (API), `localhost:9001` (Console)
+
+## 🛠️ Полезные команды
+
+```bash
+# Development
+npm run dev              # Запустить dev сервер
+npm run build            # Собрать production
+npm start                # Запустить production
+
+# Database
+npx prisma studio        # Открыть Prisma Studio
+npx prisma generate      # Сгенерировать Prisma Client
+npx prisma migrate dev   # Создать миграцию
+npx prisma db seed       # Заполнить БД данными
+
+# Docker
+docker-compose up -d     # Запустить контейнеры
+docker-compose down      # Остановить контейнеры
+docker-compose logs      # Посмотреть логи
+```
+
+## 📊 Статус проекта
+
+**Текущий этап:** Этап 1 - Фундамент ✅
+
+**Прогресс:** 30%
+
+**Дата последнего обновления:** 25 ноября 2025
+
+## 🤝 Contributing
+
+См. [CONTRIBUTING.md](./CONTRIBUTING.md) (coming soon)
+
+## 📝 License
+
+MIT
+
+---
+
+**Нужна помощь?** Открой issue или свяжись с командой разработки.
+
+**Документация:** [docs/README.md](./docs/README.md)
