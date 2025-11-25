@@ -1,5 +1,6 @@
 "use client"
 
+import { signOut } from "next-auth/react"
 import {
   BadgeCheck,
   Bell,
@@ -102,9 +103,9 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
               <LogOut />
-              Log out
+              Выход
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -1,8 +1,22 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { auth } from "@/lib/auth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut } from "lucide-react";
+import { SignOutButton } from "@/components/sign-out-button";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -11,13 +25,42 @@ export default function Home() {
           <Link href="/" className="text-xl font-bold">
             LMS
           </Link>
-          <div className="flex gap-4">
-            <Button variant="outline" asChild>
-              <Link href="/login">Вход</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/signup">Регистрация</Link>
-            </Button>
+          <div className="flex items-center gap-4">
+            {session?.user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={session.user.image || ""} />
+                      <AvatarFallback>
+                        {session.user.name?.charAt(0) || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span>{session.user.name}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>
+                    {session.user.email}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Панель управления</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <SignOutButton />
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button variant="outline" asChild>
+                  <Link href="/login">Вход</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/signup">Регистрация</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </header>
