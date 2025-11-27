@@ -58,9 +58,9 @@ export function LessonsSidebar({
   const progress = Math.round((completedCount / totalCount) * 100);
 
   return (
-    <div className="flex h-full w-80 flex-col border-l bg-background">
+    <div className="flex h-full w-full lg:w-80 flex-col lg:border-l bg-background">
       <div className="border-b p-4">
-        <h3 className="font-semibold mb-2">{courseTitle}</h3>
+        <h3 className="font-semibold mb-2 hidden lg:block">{courseTitle}</h3>
         <div className="space-y-2">
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>Прогресс курса</span>

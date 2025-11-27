@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { VideoPlayer } from "@/components/video-player";
-import { LessonsSidebar } from "@/components/lessons-sidebar";
+import { LessonPageClient } from "@/components/lesson-page-client";
 import { ChevronLeft, ChevronRight, Download, FileText } from "lucide-react";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -450,130 +450,13 @@ export default async function LessonPage({ params }: LessonPageProps) {
       : null;
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset className="flex-row">
-        <div className="flex-1 flex flex-col">
-          <header className="flex h-16 shrink-0 items-center gap-2">
-            <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 data-[orientation=vertical]:h-4"
-              />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="/courses">Курсы</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href={`/courses/${courseId}`}>
-                      {course.title}
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>{lesson.title}</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </div>
-          </header>
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{lesson.title}</h1>
-              <p className="text-muted-foreground">{lesson.description}</p>
-            </div>
-
-            <VideoPlayer videoId={lesson.videoId} />
-
-            <Tabs defaultValue="summary" className="mt-6">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="summary">
-                  <FileText className="mr-2 h-4 w-4" />
-                  Конспект
-                </TabsTrigger>
-                <TabsTrigger value="materials">
-                  <Download className="mr-2 h-4 w-4" />
-                  Материалы
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="summary">
-                <Card>
-                  <CardContent className="pt-6 prose prose-sm max-w-none dark:prose-invert">
-                    <ReactMarkdown>{lesson.summary}</ReactMarkdown>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              <TabsContent value="materials">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Материалы для скачивания</CardTitle>
-                    <CardDescription>
-                      Дополнительные материалы к уроку
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {lesson.materials?.map((material, index) => (
-                      <a
-                        key={index}
-                        href={material.url}
-                        className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent transition-colors"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                            <Download className="h-5 w-5 text-primary" />
-                          </div>
-                          <div>
-                            <p className="font-medium">{material.name}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {material.size}
-                            </p>
-                          </div>
-                        </div>
-                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                      </a>
-                    ))}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-
-            <div className="flex justify-between items-center mt-4">
-              {prevLesson ? (
-                <Button variant="outline" asChild>
-                  <Link href={`/courses/${courseId}/lessons/${prevLesson.id}`}>
-                    <ChevronLeft className="mr-2 h-4 w-4" />
-                    Предыдущее занятие
-                  </Link>
-                </Button>
-              ) : (
-                <div />
-              )}
-
-              {nextLesson ? (
-                <Button asChild>
-                  <Link href={`/courses/${courseId}/lessons/${nextLesson.id}`}>
-                    Следующее занятие
-                    <ChevronRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              ) : (
-                <Button variant="outline" asChild>
-                  <Link href={`/courses/${courseId}`}>Вернуться к курсу</Link>
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-        <LessonsSidebar
-          courseId={courseId}
-          lessons={course.lessons}
-          currentLessonId={lessonId}
-          courseTitle={course.title}
-        />
-      </SidebarInset>
-    </SidebarProvider>
+    <LessonPageClient
+      courseId={courseId}
+      lessonId={lessonId}
+      course={course}
+      lesson={lesson}
+      prevLesson={prevLesson}
+      nextLesson={nextLesson}
+    />
   );
 }
